@@ -9,67 +9,63 @@ public class Movimiento extends Thread {
     private long velocidad;
     private Pane pane;
 
-    public Movimiento(Circle circulo, long velocidad, Pane pane) {
+    public Movimiento(Circle circulo, Pane pane, long velocidad) {
         this.circulo = circulo;
         this.velocidad = velocidad;
         this.pane = pane;
-
-
     }
 
     public void mover() throws InterruptedException {
         double finX = pane.getPrefWidth();
+        System.out.println("finX: "+finX);
         double ppioX = 0;
-        double sentidoX = 1;
+        double sentidoX = +1;
         double posX = circulo.getLayoutX();
 
         double finY = pane.getPrefHeight();
+        System.out.println("finY: "+finX);
         double ppioY = 0;
-        double sentidoY = 1;
+        double sentidoY = +1;
         double posY = circulo.getLayoutY();
+
 
         while (true) {
             posX = posX + sentidoX;
-
-            if ((posX >= finX) || (posX == ppioX)) {
+            if ((posX >= pane.getWidth()) || (posX == ppioX)) {
                 sentidoX = sentidoX * (-1);
                 if (sentidoX > 0) {
                     circulo.setFill(Color.RED);
-                    
                 } else {
                     circulo.setFill(Color.BLUE);
                 }
                 posX = posX + sentidoX;
-
             }
             circulo.setLayoutX(posX);
 
-
             posY = posY + sentidoY;
-
-            if ((posY == finY) || (posY == ppioY)) {
+            if ((posY >= pane.getHeight()) || (posY == ppioY)) {
                 sentidoY = sentidoY * (-1);
                 if (sentidoY > 0) {
-                    circulo.setRadius(5);
+                    circulo.setFill(Color.RED);
                 } else {
-                    circulo.setRadius(10);
+                    circulo.setFill(Color.BLUE);
                 }
                 posY = posY + sentidoY;
-
             }
             circulo.setLayoutY(posY);
-            Thread.sleep(velocidad);
-        }
 
+            Thread.sleep(velocidad);
+            System.out.println(pane.getWidth());
+        }
     }
 
-    @Override
     public void run() {
         try {
             mover();
         } catch (InterruptedException e) {
 
         }
+
     }
 
 }
